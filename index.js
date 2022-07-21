@@ -1,31 +1,41 @@
 const digits = document.querySelectorAll(".digit");
 const operators = document.querySelectorAll(".operator");
-const result = document.querySelector(".result");
-const dotBtn = document.querySelector(".dotBtn");
-const equalBtn = document.querySelector(".equalBtn");
+const screen = document.querySelector("#screen");
+const dotBtn = document.querySelector("#dotBtn");
+const equalBtn = document.querySelector("#equalBtn");
+const clearBtn = document.querySelector("#clearBtn");
+const deleteBtn = document.querySelector("#deleteBtn");
 
 let first = "";
 let second = "";
 let operator = "";
 
 digits.forEach((digit) => digit.addEventListener("click", (e) => {
-    result.innerText += e.target.textContent;
+    screen.innerText += e.target.textContent;
 }));
 
 operators.forEach((operator) => operator.addEventListener("click", (e) => {
-    first = result.innerText;
+    first = screen.innerText;
     setOperator(e.target.innerText);
-    result.innerText = "";
+    screen.innerText = "";
 }))
 
 dotBtn.addEventListener("click", (e) => {
-    if(!result.innerText.includes("."))
-        result.innerText += e.target.textContent;
+    if(!screen.innerText.includes("."))
+        screen.innerText += e.target.textContent;
 })
 
 equalBtn.addEventListener("click", (e) => {
-    second = result.innerText;
-    result.innerText = operate(operator, first, second).toString();
+    second = screen.innerText;
+    screen.innerText = operate(operator, first, second).toString();
+})
+
+deleteBtn.addEventListener("click", (e) => {
+    screen.innerText = screen.innerText.slice(0, -1);
+})
+
+clearBtn.addEventListener("click", (e) => {
+    screen.innerText = "";
 })
 
 function setOperator(newOperator){
@@ -50,24 +60,24 @@ function divide(first, second){
 }
 
 function operate(operator, first, second){
-    let result;
+    let screen;
     first = Number(first);
     second = Number(second);
 
     switch(operator){
         case "+":
-            result = add(first, second);
+            screen = add(first, second);
             break;
         case "-":
-            result = subtract(first, second);
+            screen = subtract(first, second);
             break;
         case "×":
-            result = multiply(first, second);
+            screen = multiply(first, second);
             break;
         case "÷":
-            result = divide(first, second);
+            screen = divide(first, second);
             break;
     }
 
-    return result;
+    return screen;
 }
