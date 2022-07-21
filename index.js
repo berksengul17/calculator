@@ -31,3 +31,10 @@ function operate(operator, first, second){
             break;
     }
 }
+
+const digits = document.querySelectorAll(".digit");
+const result = document.querySelector(".result");
+
+digits.forEach((digit) => digit.addEventListener("click", (e) => {
+    result.innerText += e.target.textContent;
+}));
