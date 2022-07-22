@@ -16,6 +16,11 @@ digits.forEach((digit) => digit.addEventListener("click", (e) => {
 
 operators.forEach((operator) => operator.addEventListener("click", (e) => {
     first = screen.innerText;
+    console.log(second === "");
+    if(!second === ""){
+        console.log(`${first} ${second} ${operator}`)
+        operate(operator, first, second);
+    }
     setOperator(e.target.innerText);
     screen.innerText = "";
 }))
@@ -35,8 +40,15 @@ deleteBtn.addEventListener("click", (e) => {
 })
 
 clearBtn.addEventListener("click", (e) => {
-    screen.innerText = "";
+    reset();
 })
+
+function reset(){
+    first = "";
+    second = "";
+    operator = "";
+    screen.innerText = "";
+}
 
 function setOperator(newOperator){
     operator = newOperator;
