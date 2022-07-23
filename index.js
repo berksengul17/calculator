@@ -8,50 +8,58 @@ const deleteBtn = document.querySelector("#deleteBtn");
 
 let first = "";
 let second = "";
-let operator = "";
+let operator = null;
 
-digits.forEach((digit) => digit.addEventListener("click", (e) => {
-    screen.innerText += e.target.textContent;
-}));
+deleteBtn.addEventListener("click", deleteNum);
+clearBtn.addEventListener("click", reset);
+equalBtn.addEventListener("click", evaluate);
+dotBtn.addEventListener("click", addDot);
 
-operators.forEach((operator) => operator.addEventListener("click", (e) => {
-    first = screen.innerText;
-    console.log(second === "");
-    if(!second === ""){
-        console.log(`${first} ${second} ${operator}`)
-        operate(operator, first, second);
+digits.forEach((digit) => digit.addEventListener("click", () => addNum(digit)));
+operators.forEach((operatorButton) => operatorButton.addEventListener("click", (e) => setOperator(e.target.innerText)));
+
+function evaluate(){
+    if(second === ""){
+        second = screen.innerText;
     }
-    setOperator(e.target.innerText);
-    screen.innerText = "";
-}))
 
-dotBtn.addEventListener("click", (e) => {
-    if(!screen.innerText.includes("."))
-        screen.innerText += e.target.textContent;
-})
+    first = operate(operator, first, second).toString();
+    screen.innerText = first;
+}
 
-equalBtn.addEventListener("click", (e) => {
-    second = screen.innerText;
-    screen.innerText = operate(operator, first, second).toString();
-})
+function addNum(digit){
+    screen.innerText += digit.innerText;
+}
 
-deleteBtn.addEventListener("click", (e) => {
+function deleteNum(){
     screen.innerText = screen.innerText.slice(0, -1);
-})
+}
 
-clearBtn.addEventListener("click", (e) => {
-    reset();
-})
+function addDot(){
+    if(screen.innerText.includes(".")) return;
+    
+    if(screen.innerText === ""){
+        screen.innerText += "0";        
+    }
+    screen.innerText += ".";
+}
 
 function reset(){
     first = "";
     second = "";
-    operator = "";
+    operator = null;
     screen.innerText = "";
 }
 
 function setOperator(newOperator){
+    if(operator){
+        second = screen.innerText;
+        screen.innerText = operate(operator, first, second).toString();
+    }
+
     operator = newOperator;
+    first = screen.innerText;
+    screen.innerText = "";
 }
 
 function add(first, second){
