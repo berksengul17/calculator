@@ -10,25 +10,22 @@ let first = "";
 let second = "";
 let operator = null;
 
+window.addEventListener("keydown", handleKeyboardInput);
 deleteBtn.addEventListener("click", deleteNum);
 clearBtn.addEventListener("click", reset);
 equalBtn.addEventListener("click", evaluate);
 dotBtn.addEventListener("click", addDot);
 
-digits.forEach((digit) => digit.addEventListener("click", () => addNum(digit)));
+digits.forEach((digit) => digit.addEventListener("click", () => addNum(digit.innerText)));
 operators.forEach((operatorButton) => operatorButton.addEventListener("click", (e) => setOperator(e.target.innerText)));
 
-function evaluate(){
-    if(second === ""){
-        second = screen.innerText;
-    }
 
-    first = operate(operator, first, second).toString();
-    screen.innerText = first;
-}
 
 function addNum(digit){
-    screen.innerText += digit.innerText;
+    if(screen.innerText === "0") 
+        screen.innerText = "";
+
+    screen.innerText += digit;
 }
 
 function deleteNum(){
@@ -44,13 +41,6 @@ function addDot(){
     screen.innerText += ".";
 }
 
-function reset(){
-    first = "";
-    second = "";
-    operator = null;
-    screen.innerText = "";
-}
-
 function setOperator(newOperator){
     if(operator){
         second = screen.innerText;
@@ -60,6 +50,41 @@ function setOperator(newOperator){
     operator = newOperator;
     first = screen.innerText;
     screen.innerText = "";
+}
+
+function evaluate(){
+    if(second === ""){
+        second = screen.innerText;
+    }
+
+    first = operate(operator, first, second).toString();
+    screen.innerText = first;
+}
+
+function reset(){
+    first = "";
+    second = "";
+    operator = null;
+    screen.innerText = "0";
+}
+
+function handleKeyboardInput(e){
+    console.log(e.key);
+    if(e.key >= 0 && e.key <= 9) addNum(e.key);
+    if(e.key === ".") addDot();
+    if(e.key === "Backspace") deleteNum();
+    if(e.key === "Enter") evaluate();
+    if(e.key === "Escape") reset();
+    if(e.key === "+" || e.key === "-") setOperator(e.key);
+    if(e.key === "*" || e.key === "/") 
+        setOperator(convertOperator(e.key));
+
+}
+
+function convertOperator(operator){
+    console.log(operator);
+    if(operator === "*") return "×";
+    if(operator === "/") return "÷";
 }
 
 function add(first, second){
